@@ -16,6 +16,16 @@
 #define ZMK_MOUSE_DEFAULT_MOVE_VAL 1200  //  600
 #define ZMK_MOUSE_DEFAULT_SCRL_VAL 20    // 10
 
+&lt {
+    quick-tap-ms = <180>;
+    flavor = "tap-preferred";
+};
+
+&mt {
+    quick-tap-ms = <180>;
+    flavor = "tap-preferred";
+};
+
 / {
     behaviors {
         mmv {
