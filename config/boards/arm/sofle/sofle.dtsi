@@ -199,7 +199,7 @@
 
 &josefadamcik_sofle_layout{
 	transform = <&default_transform>;
-	kscan = <&ksacn0>;
+	kscan = <&kscan0>;
 };
 
 zephyr_udc0: &usbd { 
