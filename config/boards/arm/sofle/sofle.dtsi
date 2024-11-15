@@ -201,3 +201,8 @@
 	transform = <&default_transform>;
 	kscan = <&ksacn0>;
 };
+
+zephyr_udc0: &usbd { 
+        compatible = "nordic,nrf-usbd"; 
+        status = "okay"; 
+};
