@@ -23,7 +23,7 @@
         zephyr,display = &oled;
         zephyr,console = &cdc_acm_uart;
         zmk,underglow = &led_strip;
-        zmk,physical-layouts = &josefadamcik_sofle_layout;
+        zmk,physical-layouts = &jm_sofle_layout;
         zmk,backlight = &backlight;
     };
 
@@ -197,7 +197,7 @@
     pinctrl-names = "default", "sleep";
 };
 
-&josefadamcik_sofle_layout{
+&jm_sofle_layout{
 	transform = <&default_transform>;
 	kscan = <&kscan0>;
 };
