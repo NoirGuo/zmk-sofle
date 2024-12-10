@@ -11,7 +11,8 @@ manifest:
       remote: petejohanson
       revision: feat/pointers-with-input-processors
       import: app/west.yml
-    - name: urchin-peripheral-animation
+    - name: mario-peripheral-animation
+    # - name: urchin-peripheral-animation
       remote: gpeye
       revision: main
   self:
