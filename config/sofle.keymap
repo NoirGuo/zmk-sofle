@@ -75,7 +75,7 @@
 &lt 2 ENTER  &kp LCTRL  &kp LGUI  &kp LEFT_ALT  &kp SPACE  &lt 1 GRAVE    &kp ENTER        &lt 2 DEL  &kp SPACE  &mt RALT MINUS  &mt RCTRL EQUAL  &mo 1
             >;
 
-            sensor-bindings = <&scroll_encoder>;
+            sensor-bindings = <&inc_dec_kp PG_UP PG_DN>;
             display-name = "layer0";
         };
 
