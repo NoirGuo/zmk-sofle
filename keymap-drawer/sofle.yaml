@@ -1,6 +1,6 @@
 layout: {qmk_keyboard: sofle/rev1}
 layers:
-  layer0:
+  QWERT:
   - $$mdi:keyboard-esc$$
   - {t: '1', s: '!'}
   - {t: '2', s: '@'}
@@ -53,19 +53,19 @@ layers:
   - {t: ., s: '>'}
   - {t: /, s: '?'}
   - {t: '$$mdi:keyboard-return$$', h: '$$mdi:apple-keyboard-shift$$'}
-  - {t: '$$mdi:keyboard-return$$', h: '2'}
+  - {t: '$$mdi:keyboard-return$$', h: CONTRL}
   - $$mdi:apple-keyboard-control$$
   - LGUI
   - $$mdi:apple-keyboard-option$$
   - $$mdi:keyboard-space$$
-  - {t: '`', h: layer1, s: '~'}
+  - {t: '`', h: MOUSE, s: '~'}
   - {t: '$$mdi:keyboard-return$$', type: enter}
-  - {t: '$$mdi:backspace-reverse-outline$$', h: '2'}
+  - {t: '$$mdi:backspace-reverse-outline$$', h: CONTRL}
   - $$mdi:keyboard-space$$
   - {t: '-', h: '$$mdi:apple-keyboard-option$$', s: _}
   - {t: '=', h: '$$mdi:apple-keyboard-control$$', s: +}
-  - layer1
-  layer1:
+  - MOUSE
+  MOUSE:
   - {t: '$$mdi:transfer$$', type: trans}
   - F1
   - F2
@@ -130,7 +130,7 @@ layers:
   - {t: '$$mdi:transfer$$', type: trans}
   - {t: '$$mdi:transfer$$', type: trans}
   - {type: held alternate}
-  '2':
+  CONTRL:
   - {t: '$$mdi:transfer$$', type: trans}
   - {h: '1', s: '$$mdi:bluetooth-connect$$'}
   - {h: '2', s: '$$mdi:bluetooth-connect$$'}
