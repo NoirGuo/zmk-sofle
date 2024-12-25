@@ -52,9 +52,9 @@ layers:
   - {t: ., s: '>'}
   - {t: /, s: '?'}
   - $$mdi:apple-keyboard-shift$$
-  - {t: '$$mdi:keyboard-return$$', h: CONTROL}
+  - {t: LGUI, h: CONTROL}
   - $$mdi:apple-keyboard-shift$$
-  - $$mdi:apple-keyboard-command$$
+  - {t: '$$mdi:keyboard-return$$', type: enter}
   - $$mdi:apple-keyboard-option$$
   - $$mdi:keyboard-space$$
   - {t: '`', h: MOUSE, s: '~'}
