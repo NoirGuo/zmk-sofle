@@ -94,7 +94,7 @@ Layer 2 左下角为 `&mo 3`；按住后，Layer 3 左上角的 `&rmacro 0` 可�
 | --- | --- |
 | `eyelash_sofle_left_dya.uf2` | 左手 central |
 | `eyelash_sofle_right-zmk.uf2` | 右手 peripheral |
-| `settings_reset-nice_nano_v2-zmk.uf2` | 清除配对和运行时设置 |
+| `settings_reset.uf2` | 清除配对和运行时设置 |
 
 ## 推荐刷写顺序
 
