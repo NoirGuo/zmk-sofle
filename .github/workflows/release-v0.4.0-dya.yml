@@ -1,0 +1,74 @@
+name: Publish v0.4.0-dya release
+
+on:
+  push:
+    branches:
+      - "0.4-dya"
+    paths:
+      - ".github/workflows/release-v0.4.0-dya.yml"
+
+permissions:
+  actions: read
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download verified firmware artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: firmware
+          path: release
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          run-id: 31770056509
+
+      - name: Verify and package firmware
+        run: |
+          find release -type f -name "*.uf2" -print
+          test -f release/eyelash_sofle_left_dya.uf2
+          test -f release/eyelash_sofle_right.uf2
+          test -f release/settings_reset.uf2
+          cd release
+          zip -9 ../zmk-sofle-v0.4.0-dya.zip ./*.uf2
+
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v0.4.0-dya
+          name: v0.4.0-dya - Sofle DYA Studio
+          target_commitish: 0.4-dya
+          prerelease: true
+          generate_release_notes: false
+          body: |
+            ## Sofle ZMK 0.4 / DYA Studio
+
+            无独立接收器、无 OLED 的 Eyelash Sofle 固件。左手作为 central，右手作为 peripheral。
+
+            ### 功能
+
+            - ZMK 0.4 DYA (cormoran/zmk main+dya)
+            - Zephyr 4.1
+            - DYA Studio USB 在线改键
+            - Runtime Macro 与 Runtime Combo
+            - Runtime Input Processor
+            - 左手 EC11 编码器
+            - 右手五向摇杆鼠标移动、点击和分层功能
+            - RGB Underglow 与按键背光
+            - BLE 管理、电量历史与 Settings RPC
+            - 静态 Screenshot Macro 与 Soft Off Combo
+            - 无接收器、无 OLED/nice_view
+
+            ### 固件
+
+            - eyelash_sofle_left_dya.uf2：左手 central
+            - eyelash_sofle_right.uf2：右手 peripheral
+            - settings_reset.uf2：清除配对和运行时设置
+            - zmk-sofle-v0.4.0-dya.zip：完整固件包
+
+            三个固件均来自已通过的 GitHub Actions 运行 31770056509。跨版本升级建议先给左右手刷入 settings-reset，再刷右手和左手固件。
+          files: |
+            release/*.uf2
+            zmk-sofle-v0.4.0-dya.zip
+          fail_on_unmatched_files: true
