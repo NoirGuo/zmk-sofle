@@ -1,63 +1,162 @@
-# Sofle
+# Sofle ZMK 0.4 — DYA Studio
 
-- [中文](README.md)
-- [English](README_EN.md)
+[English](README_EN.md)
 
-## DYA Studio / Zephyr 4.1
+这是 Eyelash Sofle 无线分体键盘的 ZMK 0.4 / DYA Studio 固件。该版本直接使用左手作为 central，不需要独立接收器；保留左右手之间的蓝牙分体通信、左手编码器和右手五向摇杆，并移除 OLED/nice_view 显示支持。
 
-本分支是无接收器、无 OLED 的纯键盘版本。左手为 central，右手为 peripheral；固件基于 `cormoran/zmk#main+dya` 和 `cormoran/zephyr#v4.1.0+zmk-fixes+nrf-half-duplex-uart`。
+## 硬件形态
 
-已启用：
+- 左手 central：负责 USB、主机蓝牙、DYA Studio 和分体事件
+- 右手 peripheral：通过蓝牙连接左手
+- 左手 EC11 编码器
+- 右手五向摇杆
+- RGB Underglow 与按键背光
+- 无独立接收器、无 OLED/nice_view
 
-- DYA Studio USB RPC（USB 连接左手）
-- Runtime Macro
-- Runtime Combo
-- BLE 管理、左右电量历史和 Settings RPC
-- 原有静态 Macro 与静态 Combo
-- 左手编码器、右手五向摇杆、RGB 和按键背光
+## 技术栈
 
-未启用接收器或 OLED。右手五向摇杆继续提供鼠标移动、按键和滚动功能。
+- ZMK：`cormoran/zmk#main+dya`（ZMK 0.4 DYA 开发线）
+- Zephyr：`cormoran/zephyr#v4.1.0+zmk-fixes+nrf-half-duplex-uart`
+- DYA Studio USB RPC
+- Runtime Macro、Runtime Combo、Runtime Input Processor
+- BLE Management、Battery History、Settings RPC
 
-### 连接 DYA Studio
+## 完整功能
 
-1. 刷入同一次 Actions 构建生成的左、右手固件。
+### 键盘与连接
+
+- USB 有线输入、蓝牙输入和 5 个蓝牙配置槽
+- USB/BLE 输出切换与左右无线分体
+- Home Row Mod、NKRO 兼容配置
+- 蓝牙清除、系统重启、Bootloader 快捷键
+- 低功耗休眠与 Soft Off
+
+### DYA Studio
+
+- USB 连接左手后在线改键
+- BLE 管理、左右手电量历史和 Settings RPC
+- Runtime Macro 与 Runtime Combo 在线创建、修改和保存
+- Runtime Input Processor 支持
+- Studio 锁定保护，通过 `&studio_unlock` 主动解锁
+
+### Macro 与 Combo
+
+- 静态 `screenshot` Macro：发送 macOS `Command + Shift + S`
+- Runtime Macro Slot 0：Layer 3 左上角预留为 `&rmacro 0`
+- 静态 `softoff` Combo：同时按下 Q、S、Z 进入深度关机
+- Runtime Combo 可在 DYA Studio 中添加，不覆盖静态 Combo
+- 静态与运行时 Macro/Combo 可以共存
+
+### 左手编码器
+
+- Base 层：音量增减
+- 其他层：音量增减
+- 行为保留在各层的 `sensor-bindings` 中
+
+### 右手五向摇杆
+
+- Base：鼠标上、下、左、右移动；中键为鼠标左键
+- Layer 1：方向键上、下、左、右；中键为小键盘 Enter
+- Layer 2：五个方向分别提供 MB1、MB3、MB4、MB5、MB2
+- 启用 ZMK Pointing、移动/滚动加速度和 Runtime Input Processor
+
+### 灯光与电源
+
+- WS2812 RGB Underglow
+- RGB 开关、亮度和效果切换
+- PWM 按键背光
+- 空闲自动休眠与 RGB 自动关闭
+- Soft Off 长按保护
+
+## 默认层级
+
+| 层 | 用途 |
+| --- | --- |
+| Layer 0 | 主键盘、Home Row Mod、鼠标摇杆、音量编码器 |
+| Layer 1 | F 区、导航、RGB、鼠标按键与方向控制 |
+| Layer 2 | 蓝牙、USB/BLE、重启、Bootloader、Studio Unlock、鼠标扩展键 |
+| Layer 3 | Runtime Macro Slot 0 和 DYA 自定义预留层 |
+| Layer 4 | DYA 自定义预留层 |
+
+Layer 2 左下角为 `&mo 3`；按住后，Layer 3 左上角的 `&rmacro 0` 可执行 Runtime Macro Slot 0。
+
+## 连接 DYA Studio
+
+1. 给左右手刷入同一次 Actions 构建生成的固件。
 2. USB 连接左手并打开 [DYA Studio](https://studio.dya.cormoran.works/)。
-3. 切到第 3 层，按最左侧的 `&studio_unlock` 后连接。
+3. 进入 Layer 2，按最左侧 `Studio Unlock` 键。
+4. 在 DYA Studio 中选择左手串口。
+5. 修改后执行 Write/Save；运行时设置保存在左手 central。
 
-### Runtime Macro
+## 固件文件
 
-第 4 层左上角预留为 `&rmacro 0`，对应 DYA Studio 中的 Runtime Macro Slot 0。尚未配置 Slot 0 时，该键不会输出内容。keymap 中的静态 `screenshot` Macro 仍可正常使用。
+| 文件 | 刷写位置 |
+| --- | --- |
+| `eyelash_sofle_left_dya.uf2` | 左手 central |
+| `eyelash_sofle_right-zmk.uf2` | 右手 peripheral |
+| `settings_reset-nice_nano_v2-zmk.uf2` | 清除配对和运行时设置 |
 
-### Runtime Combo
+## 推荐刷写顺序
 
-Runtime Combo 可在 DYA Studio 中创建和修改，不会覆盖 keymap 中已有的静态 `softoff` Combo。首次刷写时没有额外的默认 Runtime Combo。
+首次安装或跨版本升级：
 
-### 构建产物
+1. 左右手分别刷一次 `settings_reset`。
+2. 给右手刷入右手固件。
+3. 给左手刷入左手 DYA 固件。
+4. 重启两侧，等待分体重新连接并与电脑重新配对。
 
-- `eyelash_sofle_left_dya.uf2`：左手 central，包含 DYA Studio、Runtime Macro 和 Runtime Combo
-- `eyelash_sofle_right...uf2`：右手 peripheral
-- `settings_reset...uf2`：清除蓝牙配对及运行时设置
+不要混用 `main`、旧 ZMK 分支和 `0.4-dya` 的左右手固件。
 
-## 更新列表
+## Runtime Macro
 
-- 2024/12/21
-  1. 增加zmk-studio支持（只需要刷新左手即可使用）。
-- 2024/10/24
-  1. 修改供电模式，功耗降低。
-  2. 修正RGB供电自动关闭的功能。
-- 2025/3/30 增加睡眠进入时间1小时  增加防抖时间 优化睡眠后功耗 
-- 2025/8/22
-  1. 更新了soft off。当您同时按下 Q、S 和 Z 键并按住 2 秒钟时，键盘将进入深度睡眠状态，无法通过按键唤醒。携带外出时可以使用此功能。激活方式为按一次复位开关。
-  2. 这个月，我还更新了矮轴版本sofle和corne的外壳。框架和底板加厚了，复位开关的开口也进行了调整，可以轻松按下复位开关。目前，我们仍在构思如何设计带有倾斜支架的外壳。如果您仔细检查过 PCB，您会注意到有用于扩展 IO 的预留接口。不知道有没有人能够使用它们，我会尝试一下！
-  3. 右侧键盘屏幕上的GIF动画被移除，这将显著降低右侧键盘的功耗。
+1. USB 连接左手，解锁并进入 DYA Studio。
+2. 在 Runtime Macro 页面编辑 Slot 0，然后 Write/Save。
+3. 按住 Layer 2 左下角进入 Layer 3。
+4. 按 Layer 3 左上角执行 `&rmacro 0`。
 
-> 如果您的键盘于2025年8月22之前更新，请更新最新的固件。
->
+未配置 Slot 0 时，该键不会输出内容。
 
-## 联系我
+## Runtime Combo
 
-如需3D打印的模型文件或者键盘有任何异常和故障，请联系380465425@qq.com
+可在 DYA Studio 中设置按键位置、输出行为、适用层和触发时间。固件默认不创建额外 Runtime Combo，因此首次刷写不会改变现有组合键。
 
-## Sofle键位图
+## 构建
 
-![Sofle键位图](keymap-drawer/eyelash_sofle.svg)
+1. 切换到 `0.4-dya` 分支。
+2. 打开 Actions → Build ZMK firmware。
+3. 运行工作流或向该分支提交改动。
+4. 确认左手、右手和 settings-reset 全部成功。
+5. 从 Artifacts 下载 `firmware`。
+
+## 故障恢复
+
+如果左右手无法连接、DYA 保存异常或蓝牙配对混乱：
+
+1. 关闭两侧电源。
+2. 左右手分别刷入 `settings_reset`。
+3. 重新刷入同一次构建的右手和左手固件。
+4. 删除电脑旧蓝牙配对，重启两侧并重新配对。
+
+清除设置会删除蓝牙配对、Runtime Macro、Runtime Combo 和 DYA 运行时设置。
+
+## 注意事项
+
+- DYA Studio 必须连接左手 central，不能连接右手 peripheral。
+- `main+dya` 属于 DYA 开发分支，升级前建议保留已验证固件。
+- 左右手必须使用同一技术栈和同一次构建的固件。
+- 此分支没有接收器和显示固件，不要刷入其他 Sofle 接收器/OLED 文件。
+
+## 键位图
+
+![Sofle 键位图](keymap-drawer/eyelash_sofle.svg)
+
+## 参考
+
+- [DYA Studio](https://studio.dya.cormoran.works/)
+- [cormoran/zmk](https://github.com/cormoran/zmk)
+- [Runtime Macro](https://github.com/cormoran/zmk-feature-runtime-macro)
+- [Runtime Combo](https://github.com/cormoran/zmk-feature-runtime-combo)
+
+## 联系方式
+
+如需 3D 打印模型，或键盘出现硬件和固件问题，请联系：`380465425@qq.com`
