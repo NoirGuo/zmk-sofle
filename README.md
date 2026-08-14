@@ -14,9 +14,9 @@
 - Runtime Combo
 - BLE 管理、左右电量历史和 Settings RPC
 - 原有静态 Macro 与静态 Combo
-- Sofle 旋钮、RGB 和按键背光
+- 左手编码器、右手五向摇杆、RGB 和按键背光
 
-未启用接收器、OLED、轨迹球或鼠标输入模块。
+未启用接收器或 OLED。右手五向摇杆继续提供鼠标移动、按键和滚动功能。
 
 ### 连接 DYA Studio
 
