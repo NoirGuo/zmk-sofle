@@ -1,0 +1,20 @@
+if SHIELD_EYELASH_SOFLE_LEFT || SHIELD_EYELASH_SOFLE_RIGHT
+
+config ZMK_SPLIT
+    default y
+
+if ZMK_BACKLIGHT
+config PWM
+    default y
+config LED_PWM
+    default y
+endif
+
+endif
+
+if SHIELD_EYELASH_SOFLE_LEFT
+config ZMK_KEYBOARD_NAME
+    default "Eyelash Sofle"
+config ZMK_SPLIT_ROLE_CENTRAL
+    default y
+endif

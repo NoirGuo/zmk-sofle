@@ -1,0 +1,16 @@
+file_format: "1"
+id: eyelash_sofle
+name: Eyelash Sofle
+type: shield
+requires: [pro_micro]
+features:
+  - keys
+  - encoder
+  - underglow
+  - backlight
+outputs:
+  - usb
+  - ble
+siblings:
+  - eyelash_sofle_left
+  - eyelash_sofle_right
